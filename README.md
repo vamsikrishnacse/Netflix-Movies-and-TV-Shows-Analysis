@@ -37,6 +37,15 @@ CREATE TABLE netflix
     listed_in    VARCHAR(250),
     description  VARCHAR(550)
 );
+
+select * from netflix;
+
+select count(*) from netflix;
+
+select DIsTINCT type from netflix;
+
+select country,count(title) from netflix group by country having country ='Singapore' ;
+
 ```
 
 ## Business Problems and Solutions
@@ -81,12 +90,13 @@ WHERE rank = 1;
 
 **Objective:** Identify the most frequently occurring rating for each type of content.
 
-### 3. List All Movies Released in a Specific Year (e.g., 2020)
+### 3. List All Movies Released in a  Year 
 
 ```sql
-SELECT * 
+SELECT release_year,title 
 FROM netflix
-WHERE release_year = 2020;
+group by release_year,title
+order by release_year,title;
 ```
 
 **Objective:** Retrieve all movies released in a specific year.
@@ -99,13 +109,15 @@ FROM
 (
     SELECT 
         UNNEST(STRING_TO_ARRAY(country, ',')) AS country,
-        COUNT(*) AS total_content
+        COUNT(title) AS total_content
+		-- title can be * as well
     FROM netflix
     GROUP BY 1
 ) AS t1
 WHERE country IS NOT NULL
 ORDER BY total_content DESC
 LIMIT 5;
+
 ```
 
 **Objective:** Identify the top 5 countries with the highest number of content items.
